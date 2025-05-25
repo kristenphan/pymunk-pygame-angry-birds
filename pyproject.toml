@@ -1,0 +1,18 @@
+[project]
+name = "finland-angry-birds"
+version = "0.1.0"
+description = "Angry Birds game built with Python"
+authors = [
+    {name = "Your Name",email = "you@example.com"}
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pymunk (==6.11.1)",
+    "pygame (==2.6.1)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
