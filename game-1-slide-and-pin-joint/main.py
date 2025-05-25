@@ -19,7 +19,7 @@ def main():
     # A basic simulation unit in Pymunk.
     # You add bodies, shapes, and joints to a space, and then update the space as a whole. 
     space = pymunk.Space()
-    space.gravity = (0, 900)  # Set gravity to pull objects downwards
+    space.gravity = (0, 900)  # Use Vec2d to set gravity to pull objects downwards
 
     balls = []
     draw_options = pymunk.pygame_util.DrawOptions(screen)
