@@ -27,6 +27,8 @@ poetry run python3 game-1-slide-and-joint/main.py
 
 ## About Pymunk and Pygame
 - Pymunk is for physics logics while Pygame is for rendering. 
+- Pymunk (top, left corner) and Pygame (bottom, left corner) have different coordinate systems. To resolve this, define coordinates according to Pymunk and flip the Pygame display `pygame.display.flip()`
+    - Example: [slide-and-joint/main.py](game-1-slide-and-joint/main.py)
 ### Pymunk
 - [Docs](https://www.pymunk.org/en/latest/installation.html)
 - Built on top of a 2D physics library Munk2D written in C. 
@@ -35,14 +37,17 @@ poetry run python3 game-1-slide-and-joint/main.py
         - A rigid body holds the physical properties of an object: mass, position, rotation, velocity, etc. 
         - It does not have a shape by itself. 
         - Example bodies: a football with a shape of circle in 2D, a wooden plank.
-        - Examples:
+        - Examples: 
             - L-shaped body: [slide-and-joint/main.py](game-1-slide-and-joint/main.py)
     - Collision shape
         - By attching shapes to bodies, you can define the body's shape. 
         - You can attach multiple shapes to a single body to define a complex shape, or none if the body does not require a shape. 
-        - Example shapes: circle, square, segment (aka. line). 
-            -  [Segment](https://www.pymunk.org/en/latest/pymunk.html#pymunk.Segment)
+        - Example shapes: circle, poly, segment (aka. line). 
+            - [pymunk.Shape](https://www.pymunk.org/en/latest/pymunk.html#pymunk.Shape)
+                - You usually don't want to create instances of this class directly but use one of the specialized spaces instead (`Circle`, `Poly`, or `Segment`)
+            - [Segment](https://www.pymunk.org/en/latest/pymunk.html#pymunk.Segment)
                 - A segment is a line shape connecting 2 points.
+            - [Circle]()
         - Examples:
             - Segments and circles: [slide-and-joint/main.py](game-1-slide-and-joint/main.py)
     - Constraint/ joint
@@ -67,9 +72,16 @@ poetry run python3 game-1-slide-and-joint/main.py
             - (0, 900) pulls downwards with acceleration 900 pixels/second^2.
         - Examples: 
         - PinJoint and SlideJoint: [slide-and-joint/main.py](game-1-slide-and-joint/main.py)
-    
+    - Mass & density
+        - When a body does not have a mass (or density on the body's shape), Pymunk often has issues doing its calculation. 
+        - You should only either set the mass and moment of inertia for a body, or (recommended) set the shape's density and let Pymunk calculate the mass and inertia based on the shape. 
 ### Pygame
 - Instead of having to write custom functions to draw the spcae in Pygame, can use Pymunk's debugging capabilities to draw space with default colors. 
+- Example drawing functions:
+    - `pygame.draw.line`
+        - https://www.pygame.org/docs/ref/draw.html#pygame.draw.line
+    - `pygame.draw.circle`
+        - https://www.pygame.org/docs/ref/draw.html#pygame.draw.circle
 - Examples: 
     - PinJoint and SlideJoint: [slide-and-joint/main.py](game-1-slide-and-joint/main.py)
 
