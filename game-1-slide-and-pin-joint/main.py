@@ -84,7 +84,7 @@ def add_ball(space):
 
     # 2. Create a circle shape for the body
     radius = 25
-    mass = 3
+    mass = 1
     shape = pymunk.Circle(body, radius)  
 
     # 3. All bodies must have their moment of inertia set. 
@@ -115,15 +115,19 @@ def add_static_l(space):
     body = pymunk.Body(body_type=pymunk.Body.STATIC)        
     body.position = (300, 300)                              # Position of the static body
 
-    # Create two segments (lines) to form an L shape
-    # Horizontal line from (-150, 0) to (255, 0) with thickness 5
-    line1 = pymunk.Segment(body, (-150, 100), (255, 100), 5)    # Horizontal line
+    # Create two segments (line shapes attached to the body) to form an L shape
+    # Horizontal line from (-150, 0) to (255, 0) with thickness 5 relative to the body position
+    horizontal_line = pymunk.Segment(body, (-150, 100), (200, 100), 5)    
 
     # # Vertical line
-    line2 = pymunk.Segment(body, (-150, 100), (-150, 50), 5)        
-    line1.friction = 1                                  # Friction for the horizontal line
-    line2.friction = 1              
-    space.add(body, line1, line2)                       # Add the static body and lines to the space  
+    vertical_line = pymunk.Segment(body, (-150, 100), (-150, 50), 5)   
+
+    # Friction for the horizontal line     
+    horizontal_line.friction = 1                                  
+    vertical_line.friction = 1    
+
+    # Add the static body and lines to the space          
+    space.add(body, horizontal_line, vertical_line)                        
 
 if __name__ == "__main__":
     sys.exit(main())

@@ -38,7 +38,9 @@ poetry run python3 game-1-slide-and-pin-joint/main.py
     - Collision shape
         - By attching shapes to bodies, you can define the body's shape. 
         - You can attach multiple shapes to a single body to define a complex shape, or none if the body does not require a shape. 
-        - Example shapes: circle, square. 
+        - Example shapes: circle, square, line. 
+            -  [Segment](https://www.pymunk.org/en/latest/pymunk.html#pymunk.Segment)
+                - A segment is a line shape connecting 2 points.
     - Constraint/ joint
         - You can attach joints between 2 bodies to constrain their behavior. 
     - Space
