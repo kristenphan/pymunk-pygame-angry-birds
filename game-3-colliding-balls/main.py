@@ -10,6 +10,7 @@ class Ball():
     def __init__(self, 
                  x: int, 
                  y: int,
+                 collision_type: int,
                  space: Space, 
                  radius: int = 10,
                  density: int = 1, 
@@ -20,10 +21,11 @@ class Ball():
         self.x = x
         self.y = y
         self.body.position = Vec2d(self.x, self.y)
-        self.body.velocity = random.uniform(-400, 400), random.uniform(-400, 400)  # Random initial velocity for x- and y-axis
+        self.body.velocity = random.uniform(-800, 800), random.uniform(-800, 800)  # Random initial velocity for x- and y-axis
         self.shape = pymunk.Circle(self.body, radius)
         self.shape.density = density
         self.shape.elasticity = elasticity
+        self.shape.collision_type = collision_type
         self.color = color
         space.add(self.body, self.shape)
     
@@ -59,11 +61,15 @@ class Floor():
                          self.shape.b, 
                          self.thickness) 
         
+def collide(arbiter, space, data):
+    print("Collision detected between balls!")	
+
 def main():
     # 1. Set up Pymunk space
     print("Hello from game-3!")
     pygame.init()
-    display = pygame.display.set_mode((800, 800)) # 800x800 pixels
+    screen_size = 500  # Size of the game window
+    display = pygame.display.set_mode((screen_size, screen_size)) # 800x800 pixels
     pygame.display.set_caption("Game 2: Colliding Balls")
     clock = pygame.time.Clock()
     fps = 60
@@ -73,33 +79,33 @@ def main():
     # 2. Create balls
     ball_color = (163, 201, 166)  # Color of the ball: red
     ball_radius = 30
-    balls = {}
-    for i in range(10):
-        balls[i] = Ball(x=random.randint(0, 800),
-                        y=random.randint(0, 800),
-                        radius=ball_radius,
-                        color=ball_color,
-                        space=space) 
+    balls = [Ball(x=random.randint(0, screen_size),
+                  y=random.randint(0, screen_size),
+                  collision_type=i,  # Unique collision type for each ball
+                  radius=ball_radius,
+                  color=ball_color,
+                  space=space) for i in range(2)]  # Create two balls with different collision types
     
     floor_color = (255, 223, 211)
     floor_thickness = 20  # Thickness of the floor
     floor_elasticity = 0.8  # Elasticity of the floor
-    corners = [(Vec2d(0, 800), Vec2d(800, 800)),
-               (Vec2d(0, 0), Vec2d(800, 0)),
-               (Vec2d(0, 0), Vec2d(0, 800)),
-               (Vec2d(800, 0), Vec2d(800, 800))]
+    corners = [(Vec2d(0, screen_size), Vec2d(screen_size, screen_size)),
+               (Vec2d(0, 0), Vec2d(screen_size, 0)),
+               (Vec2d(0, 0), Vec2d(0, screen_size)),
+               (Vec2d(screen_size, 0), Vec2d(screen_size, screen_size))]
     
     # 3. Create floors acting as walls to contain the balls
-    floors = {}
-    for i, corner in enumerate(corners):
-        point_left, point_right = corner
-        floors[i] = Floor(point_left=point_left, 
+    floors = [Floor(point_left=point_left, 
                       point_right=point_right, 
                       thickness=floor_thickness, 
                       elasticity=floor_elasticity, 
                       color=floor_color,  # Color of the floor: black
-                      space=space)
+                      space=space) for point_left, point_right in corners]
     
+    # 4. Set up collision handlers
+    handler = space.add_collision_handler(0, 1)  # Collision handler for balls with collision type 0 and 1
+    handler.separate = collide  # Function to call when a collision is detected
+
     # 4. Keep the game running unless the user interrupts it
     while True:
         for event in pygame.event.get():
@@ -112,10 +118,10 @@ def main():
         # 5. Draw the background, balls, and floors
         display.fill(background_color)  # Redraw the background as white
 
-        for ball in balls.values():
+        for ball in balls:
             ball.draw(display)
 
-        for floor in floors.values():
+        for floor in floors:
             floor.draw(display)
 
         # 6. Update the display
