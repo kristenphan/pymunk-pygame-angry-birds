@@ -58,13 +58,20 @@ poetry run python3 game-1-slide-and-joint/main.py
     - Friction
         - https://www.pymunk.org/en/latest/pymunk.html#pymunk.Circle.friction
         - friction = 0 is frictionless (Can slide forever).
+        - Examples: 
+            - PinJoint and SlideJoint: [slide-and-joint/main.py](game-1-slide-and-joint/main.py)
     - Gravity
         - https://www.pymunk.org/en/latest/pymunk.html#pymunk.Space.gravity
         - Use Vec2d to set gravity to pull objects downwards
             - y is positive downwards, x is positive to the right.
             - (0, 900) pulls downwards with acceleration 900 pixels/second^2.
+        - Examples: 
+        - PinJoint and SlideJoint: [slide-and-joint/main.py](game-1-slide-and-joint/main.py)
     
 ### Pygame
+- Instead of having to write custom functions to draw the spcae in Pygame, can use Pymunk's debugging capabilities to draw space with default colors. 
+- Examples: 
+    - PinJoint and SlideJoint: [slide-and-joint/main.py](game-1-slide-and-joint/main.py)
 
 ## Resources
 - https://python-poetry.org/docs/basic-usage/#using-poetry-run

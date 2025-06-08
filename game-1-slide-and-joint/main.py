@@ -12,16 +12,14 @@ def main():
     # 1. Intialize Pygame and create a screen of size 600x600 pixels
     pygame.init()
     screen = pygame.display.set_mode((600, 600))    
-    pygame.display.set_caption("Game 1: Slide & Pin Joint")
+    pygame.display.set_caption("Game 1: Slide & Joint")
     clock = pygame.time.Clock()
-
 
     # 2. Create a Pymunk space.
     # SPACE:
     # Space is a basic simulation unit in Pymunk.
     # You add bodies, shapes, and joints to a space, and then update the space as a whole. 
     space = pymunk.Space()
-
 
     # 3. Set gravity to pull objects downwards using Vec2d.
     # Vec2d: y is positive downwards, x is positive to the right.
@@ -71,7 +69,6 @@ def main():
             balls.remove(ball)  # Remove the ball from the list
 
         # 12. Draw the space with balls and L shape.
-
         # Step the physics simulation  
         space.step(1/50.0)              
 
@@ -90,11 +87,10 @@ def add_ball(space):
     """
     Return a circle shape that represents a ball in the space.
     """
+    # 1. Create ball's body at a starting position.
     # BODY
     # A rigid body holds the physical properties of an object, such as its position, velocity, and mass.
     # It does not have a shape by itself. 
-
-    # 1. Create ball's body at a starting position.
     # Default body type is dynamic, meaning it can move and be affected by forces.
     # https://www.pymunk.org/en/latest/_modules/pymunk/body.html#Body
     body = pymunk.Body() 
@@ -169,7 +165,7 @@ def add_rorating_l(space):
 
     # 6.Add the L-shaped body with segments, one PinJoint, one SlideJoint.
     # The joints control how the L-shaped body rotates and slides as the balls hit it.           
-    space.add(horizontal_line, vertical_line, l_body, rotation_center_joint, rotation_limit_joint)                   
+    space.add(l_body, horizontal_line, vertical_line, rotation_center_joint, rotation_limit_joint)                   
 
 if __name__ == "__main__":
     sys.exit(main())
